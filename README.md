@@ -1,5 +1,7 @@
 # Browser Proxy
 
+[![CI](https://github.com/glhewett/browser_proxy/actions/workflows/ci.yml/badge.svg)](https://github.com/glhewett/browser_proxy/actions/workflows/ci.yml)
+
 A secure, allowlist-only HTTP/HTTPS proxy server with HTML URL rewriting, built in Rust.
 
 ## History
