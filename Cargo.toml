@@ -1,0 +1,51 @@
+[package]
+name = "browser_proxy"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Web framework
+axum = { version = "0.7", features = ["macros"] }
+tokio = { version = "1", features = ["full"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["fs", "trace"] }
+
+# HTTP client for proxying
+reqwest = { version = "0.11", features = ["rustls-tls", "stream"], default-features = false }
+hyper = "1.0"
+
+# HTML parsing and rewriting
+scraper = "0.18"
+html5ever = "0.26"
+
+# URL handling
+url = "2.5"
+
+# Template engine
+askama = "0.12"
+askama_axum = "0.4"
+
+# Session management
+tower-sessions = "0.10"
+
+# Configuration
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+async-trait = "0.1"
+
+# Domain filtering (wildcard matching)
+wildmatch = "2.1"
+
+# MIME type handling
+mime = "0.3"
+
+# Regex for URL pattern matching
+regex = "1.10"

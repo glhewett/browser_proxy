@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Error - Browser Proxy{% endblock %}
+
+{% block content %}
+<h1>Access Denied</h1>
+
+<div class="error">
+    <strong>Error:</strong> {{ error_message }}
+</div>
+
+{% if !blocked_domain.is_empty() %}
+<p>The domain <code>{{ blocked_domain }}</code> is not in the allowlist.</p>
+{% endif %}
+
+<h3>Allowed Domains</h3>
+<p>Only the following domains can be proxied:</p>
+<ul>
+    {% for domain in allowed_domains %}
+    <li><code>{{ domain }}</code></li>
+    {% endfor %}
+</ul>
+
+<div class="info">
+    <p><strong>To allow this domain:</strong></p>
+    <ol>
+        <li>Open <code>config.toml</code> in your text editor</li>
+        <li>Add the domain to the <code>allowlist</code> array</li>
+        <li>Restart the server</li>
+    </ol>
+</div>
+
+<p><a href="/home">← Back to Home</a></p>
+{% endblock %}

@@ -1,0 +1,12 @@
+target/
+.git/
+.gitignore
+*.md
+.env
+config.toml
+.github/
+.vscode/
+.idea/
+*.log
+logs/
+tmp/

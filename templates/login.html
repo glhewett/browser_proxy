@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Browser Proxy{% endblock %}
+
+{% block content %}
+<h1>Browser Proxy</h1>
+<p>Secure web proxy with domain filtering</p>
+
+<h2>Login</h2>
+<form action="/login" method="post">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required autofocus>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit">Login</button>
+</form>
+
+{% if !error.is_empty() %}
+<div class="error">
+    <strong>Error:</strong> {{ error }}
+</div>
+{% endif %}
+{% endblock %}

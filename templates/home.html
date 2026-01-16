@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Browser Proxy{% endblock %}
+
+{% block content %}
+<h1>Browser Proxy</h1>
+<p>Enter a URL to browse through the proxy</p>
+
+<h2>Enter URL</h2>
+<form action="/browse" method="post">
+    <label for="url">Website URL (must be in allowlist)</label>
+    <input type="url" id="url" name="url" placeholder="https://example.com" required autofocus>
+    <button type="submit">Browse</button>
+</form>
+
+<h3>Allowed Domains</h3>
+<div class="info">
+    <p>Only the following domains can be proxied:</p>
+    <ul>
+        {% for domain in allowed_domains %}
+        <li><code>{{ domain }}</code></li>
+        {% endfor %}
+    </ul>
+    <p><em>To add more domains, edit <code>config.toml</code> and restart the server.</em></p>
+</div>
+
+<h3>How It Works</h3>
+<p>This proxy intercepts web requests and rewrites HTML content so that all links route through the proxy server. This allows you to browse websites while maintaining control over which external domains are accessed.</p>
+<ul>
+    <li><strong>Allowlist-only mode:</strong> Only explicitly allowed domains can be accessed</li>
+    <li><strong>HTML rewriting:</strong> All URLs in HTML pages are rewritten to route through the proxy</li>
+    <li><strong>HTTPS support:</strong> Both HTTP and HTTPS websites are supported</li>
+</ul>
+{% endblock %}

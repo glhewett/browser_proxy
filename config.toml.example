@@ -1,0 +1,37 @@
+[server]
+host = "127.0.0.1"
+port = 3000
+
+[auth]
+# Simple username/password for demo
+# In production, use proper authentication
+username = "admin"
+password = "changeme"
+
+[domain_filter]
+# REQUIRED: Allowlist must contain at least one domain
+# Add the main site you want to proxy and any external dependencies
+allowlist = [
+    "example.com",            # Primary site to proxy
+    # Add external dependencies as discovered:
+    # "cdn.example.com",      # CDN for images
+    # "fonts.googleapis.com", # Google Fonts
+    # "ajax.googleapis.com"   # jQuery CDN
+]
+
+# OPTIONAL: Block specific domains even if in allowlist
+# Blocklist always takes precedence
+blocklist = [
+    # "ads.example.com",      # Block ads
+    # "tracking.example.com"  # Block tracking
+]
+
+[logging]
+# Log level: trace, debug, info, warn, error
+level = "info"
+
+# Log format: json or pretty
+format = "pretty"
+
+# Log proxy requests
+log_requests = true

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  browser_proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: browser_proxy
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-3000}:3000"
+    volumes:
+      # Mount config file (optional, can use env vars instead)
+      - ./config.toml:/app/config.toml:ro
+      # Logs (optional)
+      - ./logs:/app/logs
+    environment:
+      - SERVER_HOST=${SERVER_HOST:-0.0.0.0}
+      - SERVER_PORT=${SERVER_PORT:-3000}
+      - AUTH_USERNAME=${AUTH_USERNAME:-admin}
+      - AUTH_PASSWORD=${AUTH_PASSWORD:-changeme}
+      - DOMAIN_FILTER_ALLOWLIST=${DOMAIN_FILTER_ALLOWLIST:-}
+      - DOMAIN_FILTER_BLOCKLIST=${DOMAIN_FILTER_BLOCKLIST:-}
+      - LOGGING_LEVEL=${LOGGING_LEVEL:-info}
+      - LOGGING_FORMAT=${LOGGING_FORMAT:-pretty}
+      - LOGGING_LOG_REQUESTS=${LOGGING_LOG_REQUESTS:-true}
+    networks:
+      - proxy_network
+
+networks:
+  proxy_network:
+    driver: bridge
