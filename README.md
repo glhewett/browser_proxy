@@ -458,6 +458,84 @@ Contributions welcome! Please feel free to submit issues or pull requests.
 
 For major changes, please open an issue first to discuss what you would like to change.
 
+## Use Case Example: Secure Access to Private Network Resources
+
+This proxy is particularly useful when you need to access web applications in a private network through a controlled gateway. Here's a real-world deployment scenario:
+
+### Architecture Overview
+
+```mermaid
+graph TB
+    subgraph "Local Network"
+        User["👤 User<br/>(Your Computer)"]
+
+        subgraph "VM on Local Network"
+            Proxy["browser_proxy<br/>:3000"]
+            PgAdmin["pgAdmin<br/>:5050"]
+            Grafana["Grafana<br/>:3001"]
+            VPN["VPN Client<br/>(Connected)"]
+        end
+    end
+
+    subgraph "Private Network<br/>(VPN Required)"
+        WebAdmin["Web Admin<br/>10.x.x.x"]
+        Database["Database<br/>10.x.x.x"]
+        PrivateServices["Other Private<br/>Services"]
+    end
+
+    User -->|1. Browse to VM:3000| Proxy
+    Proxy -->|2. Proxy HTTP requests| VPN
+    VPN -->|3. Access via VPN tunnel| WebAdmin
+
+    User -.->|Direct access| PgAdmin
+    User -.->|Direct access| Grafana
+
+    PgAdmin -->|Via VPN| Database
+    Grafana -->|Via VPN| Database
+
+    style Proxy fill:#90EE90
+    style VPN fill:#87CEEB
+    style WebAdmin fill:#FFB6C1
+```
+
+### How It Works
+
+1. **VM Setup**: A VM on your local network runs:
+   - VPN client connected to the private network
+   - pgAdmin and Grafana for database/metrics visualization
+   - browser_proxy for web application access
+
+2. **Access Flow**:
+   - You access `browser_proxy` from your local machine
+   - Enter the private web admin URL (e.g., `http://10.x.x.x/admin`)
+   - browser_proxy validates the domain against the allowlist
+   - Requests are proxied through the VM's VPN connection
+   - Private web admin responds via the VPN tunnel
+   - HTML is rewritten to route all links through the proxy
+
+3. **Security Layers**:
+   - **Authentication**: browser_proxy requires username/password
+   - **Allowlist**: Only explicitly allowed domains can be accessed
+   - **Local Network**: VM accessible only on your local network
+   - **VPN**: Private resources protected behind VPN authentication
+   - **Application Auth**: Each service (pgAdmin, Grafana, Web Admin) has its own credentials
+
+### Security Considerations
+
+This setup **increases attack surface** by exposing private network resources through multiple applications. However, it's acceptable in controlled environments when:
+
+- ✅ All applications require strong authentication
+- ✅ Services run on a trusted local network
+- ✅ VPN connection is properly secured
+- ✅ Allowlist is configured to only permit known, trusted domains
+- ✅ Regular security updates are applied to all components
+
+**Not recommended** for:
+- ❌ Direct internet exposure without additional security layers
+- ❌ Production environments with sensitive data requiring compliance
+- ❌ Scenarios where end-to-end encryption is mandatory
+- ❌ Untrusted networks or shared hosting environments
+
 ## Further Documentation
 
 - **DOCKER.md** - Detailed Docker deployment guide
