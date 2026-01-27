@@ -1,4 +1,4 @@
-use super::{DefaultProxyHandler, HtmlProxyHandler, ProxyHandler};
+use super::{CssProxyHandler, DefaultProxyHandler, HtmlProxyHandler, ProxyHandler};
 
 pub fn get_handler(content_type: &str) -> Box<dyn ProxyHandler> {
     if content_type.contains("text/html") {
@@ -7,6 +7,12 @@ pub fn get_handler(content_type: &str) -> Box<dyn ProxyHandler> {
             content_type
         );
         Box::new(HtmlProxyHandler)
+    } else if content_type.contains("text/css") {
+        tracing::debug!(
+            "Selected CssProxyHandler for content-type: {}",
+            content_type
+        );
+        Box::new(CssProxyHandler)
     } else {
         tracing::debug!(
             "Selected DefaultProxyHandler for content-type: {}",

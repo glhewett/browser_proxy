@@ -40,7 +40,7 @@ pub struct LoggingConfig {
 impl Config {
     pub fn load(path: &str) -> Result<Self> {
         // Try to load from file first
-        if std::path::Path::new(path).exists() {
+        if std::path::Path::new(path).is_file() {
             let content = std::fs::read_to_string(path)?;
             let config: Config = toml::from_str(&content)?;
             return Ok(config);

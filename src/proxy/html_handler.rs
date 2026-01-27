@@ -139,31 +139,31 @@ impl HtmlProxyHandler {
         }
 
         // Handle absolute URLs (http://example.com/path or https://example.com/path)
-        if url_value.starts_with("http://") || url_value.starts_with("https://") {
-            if let Ok(parsed) = Url::parse(url_value) {
-                let scheme = parsed.scheme();
-                let host = parsed.host_str()?;
-                let port = if let Some(p) = parsed.port() {
-                    format!(":{}", p)
-                } else {
-                    String::new()
-                };
-                let path = parsed.path();
-                let query = if let Some(q) = parsed.query() {
-                    format!("?{}", q)
-                } else {
-                    String::new()
-                };
-                let fragment = if let Some(f) = parsed.fragment() {
-                    format!("#{}", f)
-                } else {
-                    String::new()
-                };
-                return Some(format!(
-                    "{}/{}/{}{}{}{}{}",
-                    proxy_base, scheme, host, port, path, query, fragment
-                ));
-            }
+        if (url_value.starts_with("http://") || url_value.starts_with("https://"))
+            && let Ok(parsed) = Url::parse(url_value)
+        {
+            let scheme = parsed.scheme();
+            let host = parsed.host_str()?;
+            let port = if let Some(p) = parsed.port() {
+                format!(":{}", p)
+            } else {
+                String::new()
+            };
+            let path = parsed.path();
+            let query = if let Some(q) = parsed.query() {
+                format!("?{}", q)
+            } else {
+                String::new()
+            };
+            let fragment = if let Some(f) = parsed.fragment() {
+                format!("#{}", f)
+            } else {
+                String::new()
+            };
+            return Some(format!(
+                "{}/{}/{}{}{}{}{}",
+                proxy_base, scheme, host, port, path, query, fragment
+            ));
         }
 
         // Handle relative URLs (path/to/resource)

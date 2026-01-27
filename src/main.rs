@@ -67,7 +67,8 @@ async fn main() -> anyhow::Result<()> {
 
     // 7. Setup session layer
     let session_store = MemoryStore::default();
-    let session_layer = SessionManagerLayer::new(session_store);
+    let session_layer = SessionManagerLayer::new(session_store)
+        .with_secure(false); // Allow cookies over HTTP (set true if behind HTTPS proxy)
 
     // 8. Build router
     // Public routes

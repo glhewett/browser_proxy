@@ -1,6 +1,6 @@
 use axum::{
     body::Body,
-    extract::{Path, State},
+    extract::{Host, Path, State},
     http::{Response, StatusCode},
     response::IntoResponse,
 };
@@ -12,6 +12,7 @@ use crate::AppState;
 
 pub async fn proxy_handler(
     State(state): State<Arc<AppState>>,
+    Host(host): Host,
     Path((scheme, target_path)): Path<(String, String)>,
 ) -> impl IntoResponse {
     // 1. Construct target URL from scheme and path
@@ -64,10 +65,7 @@ pub async fn proxy_handler(
     let handler = get_handler(content_type);
 
     // 5. Process response with handler
-    let proxy_base = format!(
-        "http://{}:{}/proxy",
-        state.config.server.host, state.config.server.port
-    );
+    let proxy_base = format!("http://{}/proxy", host);
     let (body, content_type) = match handler.handle(response, &proxy_base, &url).await {
         Ok(result) => result,
         Err(e) => {
